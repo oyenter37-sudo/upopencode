@@ -10,8 +10,11 @@ Fresh install · v1 → v2 migration · atomic updates · one-line progress.
 [![License: MIT](https://img.shields.io/github/license/oyenter37-sudo/upopencode?color=blue)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Termux%20%7C%20Linux-8957e5)](#requirements)
 [![OpenCode 2.2.5 tested](https://img.shields.io/badge/OpenCode-2.2.5%20tested-46c018)](https://github.com/anomalyco/opencode/releases/tag/v2.2.5)
+[![latest OpenCode](https://img.shields.io/github/v/release/anomalyco/opencode?label=opencode&color=46c018&sort=semver)](https://github.com/anomalyco/opencode/releases)
 
-<sub>Last verified with <b>OpenCode 2.2.5</b> · November 2026</sub>
+<!-- upstream:start -->
+**Latest OpenCode: v2.2.5** · checked daily · [install or update with one command →](#quick-start)
+<!-- upstream:end -->
 
 </div>
 
@@ -23,8 +26,9 @@ Paste this into Termux (or any Linux terminal) and press Enter:
 curl -fsSL https://raw.githubusercontent.com/oyenter37-sudo/upopencode/main/install.sh | bash
 ```
 
-**That's it.** Pick the language in the menu (↑/↓ + Enter, or `1`/`2`/`3`) —
-`upoc` is ready. No Node.js, no npm, no root.
+**That's it.** Pick the language in the menu (↑/↓ + Enter, or `1`/`2`/`3`),
+then run `upoc` — it installs OpenCode or updates it to the latest v2.
+No Node.js, no npm, no root.
 
 > On Termux the installer offers to add `glibc` and `patchelf` if they are
 > missing. Everything else is already there.

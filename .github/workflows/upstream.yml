@@ -1,0 +1,41 @@
+name: upstream
+
+on:
+  schedule:
+    - cron: "17 4 * * *"   # daily, 04:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: upstream
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: latest OpenCode
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve the latest OpenCode
+        id: latest
+        run: echo "version=$(bash .github/scripts/upstream.sh)" >> "$GITHUB_OUTPUT"
+
+      - name: Update the README markers
+        run: python3 .github/scripts/update_readme.py "${{ steps.latest.outputs.version }}"
+
+      - name: Commit if the version changed
+        run: |
+          if git diff --quiet -- README.md README.ru.md; then
+            echo "README is up to date"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md README.ru.md
+          git commit -m "docs: OpenCode v${{ steps.latest.outputs.version }} is the latest"
+          git push

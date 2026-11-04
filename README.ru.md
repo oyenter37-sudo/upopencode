@@ -10,8 +10,11 @@
 [![License: MIT](https://img.shields.io/github/license/oyenter37-sudo/upopencode?color=blue)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Termux%20%7C%20Linux-8957e5)](#требования)
 [![OpenCode 2.2.5 tested](https://img.shields.io/badge/OpenCode-2.2.5%20tested-46c018)](https://github.com/anomalyco/opencode/releases/tag/v2.2.5)
+[![latest OpenCode](https://img.shields.io/github/v/release/anomalyco/opencode?label=opencode&color=46c018&sort=semver)](https://github.com/anomalyco/opencode/releases)
 
-<sub>Последняя проверка: <b>OpenCode 2.2.5</b> · ноябрь 2026</sub>
+<!-- upstream:start -->
+**Последний OpenCode: v2.2.5** · проверяется каждый день · [поставить или обновить одной командой →](#быстрый-старт)
+<!-- upstream:end -->
 
 </div>
 
@@ -23,7 +26,8 @@
 curl -fsSL https://raw.githubusercontent.com/oyenter37-sudo/upopencode/main/install.sh | bash
 ```
 
-**Всё.** Выбери язык в меню (↑/↓ + Enter или `1`/`2`/`3`) — и `upoc` готов.
+**Всё.** Выбери язык в меню (↑/↓ + Enter или `1`/`2`/`3`), потом запусти
+`upoc` — он поставит OpenCode или обновит его до последней v2.
 Никакого Node.js, npm и root.
 
 > На Termux установщик сам предложит доставить `glibc` и `patchelf`, если их
