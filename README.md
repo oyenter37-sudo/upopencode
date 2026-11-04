@@ -13,8 +13,24 @@ Fresh install · v1 → v2 migration · atomic updates · one-line progress.
 
 <sub>Last verified with <b>OpenCode 2.2.5</b> · November 2026</sub>
 
-<img src="docs/screenshot-check.svg" alt="upopencode --check" width="760">
+</div>
 
+## Quick start
+
+Paste this into Termux (or any Linux terminal) and press Enter:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/oyenter37-sudo/upopencode/main/install.sh | bash
+```
+
+**That's it.** Pick the language in the menu (↑/↓ + Enter, or `1`/`2`/`3`) —
+`upoc` is ready. No Node.js, no npm, no root.
+
+> On Termux the installer offers to add `glibc` and `patchelf` if they are
+> missing. Everything else is already there.
+
+<div align="center">
+<img src="docs/screenshot-check.svg" alt="upopencode --check" width="760">
 </div>
 
 ---
@@ -188,6 +204,126 @@ data or config:
 
 - `~/.local/share/opencode` — sessions, storage
 - `~/.config/opencode` — `opencode.jsonc`, MCP servers, plugins
+
+## FAQ
+
+<details>
+<summary><b>Do I need Node.js, npm or root?</b></summary>
+
+No. The installer is pure Bash + `curl`. On Termux it uses the official glibc
+build and only asks for `glibc` + `patchelf` if they are missing. No root, no
+proot, no Node.js.
+</details>
+
+<details>
+<summary><b>Which devices are supported?</b></summary>
+
+Termux on Android (**aarch64** and **x86_64**) and Linux (**x86_64** and
+**aarch64**). A recent Termux from F-Droid or GitHub is recommended.
+</details>
+
+<details>
+<summary><b>Where does it install things?</b></summary>
+
+- Termux: `$PREFIX/bin` (usually `/data/data/com.termux/files/usr/bin`)
+- Linux: `~/.local/bin`
+- OpenCode itself: `~/.local/share/opencode2`
+- Your config stays in `~/.config/opencode`
+
+The installer tells you if its directory is not in `PATH` and prints the line to add.
+</details>
+
+<details>
+<summary><b>Will it overwrite my OpenCode v1?</b></summary>
+
+No. A legacy v1 is renamed to `opencode-v1` and keeps working; v2 is installed
+next to it as `opencode` / `opencode2`.
+</details>
+
+<details>
+<summary><b>How do I update OpenCode?</b></summary>
+
+Run `upoc` and choose update, or check first:
+
+```sh
+upoc --check
+```
+
+`upopencode` itself updates separately:
+
+```sh
+upoc --self-update
+```
+</details>
+
+<details>
+<summary><b>What if the new binary does not start?</b></summary>
+
+The swap is atomic: the previous binary is kept as a hardlink and restored
+automatically when `--version` fails. Use `--backup` to always keep a copy and
+`--clean` to remove old ones.
+</details>
+
+<details>
+<summary><b>How do I remove only the installer or only OpenCode?</b></summary>
+
+```sh
+upoc --uninstall            # upopencode only, OpenCode keeps working
+upoc --uninstall-opencode   # OpenCode only, upopencode stays
+```
+
+Neither command touches sessions or config.
+</details>
+
+<details>
+<summary><b>Will I lose my sessions, API keys or settings?</b></summary>
+
+No. `~/.local/share/opencode` (sessions, storage) and `~/.config/opencode`
+(`opencode.jsonc`, MCP servers, plugins) are never modified or deleted.
+</details>
+
+<details>
+<summary><b>Does it work without an interactive terminal (CI, SSH, scripts)?</b></summary>
+
+Yes. Without a TTY the installer skips the menu and installs both builds. Choose
+explicitly with `--en`, `--ru` or `--both`, and add `--yes` for other prompts.
+</details>
+
+<details>
+<summary><b>Why not a `.deb` or a package repository?</b></summary>
+
+That needs a local build or a separately maintained repo. `upopencode` takes the
+official release tarball, verifies it and patches only the interpreter — so it
+follows upstream the same day and needs no toolchain.
+</details>
+
+<details>
+<summary><b>Is it safe? Can I read the script first?</b></summary>
+
+Yes — the whole tool is in this repository (`upopencode`, `install.sh`), the
+license is MIT, and every download is checked against `SHA256SUMS`. You can
+inspect it before running:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/oyenter37-sudo/upopencode/main/upopencode -o upoc
+less upoc
+```
+</details>
+
+<details>
+<summary><b>Which languages are available?</b></summary>
+
+English and Russian. Pick one or both during install. With both installed,
+`upoc` is Russian and `upoc-en` is English. A single language always gets
+`upopencode` + `upoc`.
+</details>
+
+<details>
+<summary><b>Something else went wrong. Where do I ask?</b></summary>
+
+Open an issue: https://github.com/oyenter37-sudo/upopencode/issues — include the
+output of `upoc --version`, `uname -m` and your Android/Termux version.
+</details>
 
 ## Troubleshooting
 
