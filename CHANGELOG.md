@@ -1,3 +1,19 @@
+# upopencode 1.5.1
+
+### Added
+- Interactive language picker in the one-command installer: arrow keys, `1`/`2`/`3`
+  or a tap. `--en`, `--ru` and `--both` skip it.
+- Smart install layout: with both builds, `upopencode`/`upoc` is Russian and
+  `upopencode-en`/`upoc-en` is English. A single language always gets one
+  command (`upopencode`) and one short name (`upoc`).
+
+### Fixed
+- Self-update now follows the installed build's language instead of its file
+  name, so a Russian `upopencode` updates from `upopencode-ru` and an English
+  `upopencode-en` from `upopencode`.
+- Uninstall removes every installed build name (`upopencode`, `upopencode-en`,
+  `upoc`, `upoc-en`) without touching OpenCode or user data.
+
 # upopencode 1.5.0
 
 First public release.

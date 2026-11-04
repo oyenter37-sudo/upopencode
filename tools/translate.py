@@ -39,6 +39,7 @@ def main() -> int:
         src = ROOT / "upopencode"
         dst = ROOT / "upopencode-ru"
         text = apply(src.read_text(), EN2RU)
+        text = text.replace('LANG_CODE="en"', 'LANG_CODE="ru"', 1)
         first, rest = text.split("\n", 1)
         header = "# ВНИМАНИЕ: файл сгенерирован из upopencode (tools/translate.py).\n"
         dst.write_text(first + "\n" + header + rest, encoding="utf-8")

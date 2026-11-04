@@ -38,14 +38,15 @@
 curl -fsSL https://raw.githubusercontent.com/oyenter37-sudo/upopencode/main/install.sh | bash
 ```
 
-Ставятся **обе** версии:
+Установщик спросит язык — стрелки, `1`/`2`/`3` или тап:
 
-| Команда | Язык |
+| Выбор | Установленные команды |
 |---|---|
-| `upopencode` | English |
-| `upopencode-ru` | Русский |
+| **Обе** | `upopencode` / `upoc` — русский · `upopencode-en` / `upoc-en` — English |
+| **Только English** | `upopencode` / `upoc` — English |
+| **Только русский** | `upopencode` / `upoc` — русский |
 
-Нужна только одна?
+Пропустить меню флагом:
 
 ```sh
 # только английская
@@ -53,14 +54,20 @@ curl -fsSL https://raw.githubusercontent.com/oyenter37-sudo/upopencode/main/inst
 
 # только русская
 curl -fsSL https://raw.githubusercontent.com/oyenter37-sudo/upopencode/main/install.sh | bash -s -- --ru
+
+# обе (без меню)
+curl -fsSL https://raw.githubusercontent.com/oyenter37-sudo/upopencode/main/install.sh | bash -s -- --both
 ```
 
 Дальше просто:
 
 ```sh
-upopencode-ru        # меню: поставить / обновить / переехать
-upopencode-ru --check  # есть ли новая версия?
+upoc                 # меню: поставить / обновить / переехать
+upoc --check         # есть ли новая версия?
 ```
+
+`upoc` всегда запускает выбранную сборку. Если поставил **обе**, `upoc` — русская,
+а `upoc-en` — английская.
 
 > **Никакого Node.js, Python и npm.** Чистый Bash + `curl`, `tar`, `sha256sum`, `df`,
 > а на Termux ещё `patchelf` и `glibc` (скрипт сам предложит их поставить).
@@ -74,46 +81,47 @@ upopencode-ru --check  # есть ли новая версия?
 
 ## Использование
 
+> `upoc` запускается на выбранном языке. Поставил обе? `upoc-en` — английская версия.
+
 | Команда | Что делает |
 |---|---|
-| `upopencode-ru` | интерактивное меню: поставить / обновить / переехать |
-| `upopencode-ru --check`, `-c` | сравнить установленную и последнюю версию, ничего не менять |
-| `upopencode-ru --dry-run`, `-n` | показать план и место, ничего не качать |
-| `upopencode-ru --yes`, `-y` | без вопросов (бэкап не создаётся) |
-| `upopencode-ru --force`, `-f` | переустановить, даже если версия та же |
-| `upopencode-ru --restart`, `-r` | перезапустить фоновый сервис после обновления |
-| `upopencode-ru --backup` | всегда оставлять бэкап старого бинаря |
-| `upopencode-ru --no-backup` | никогда не оставлять бэкап |
-| `upopencode-ru --clean` | удалить старые бэкапы и брошенные временные папки |
-| `upopencode-ru --alias set ИМЯ` | короткая команда для запуска OpenCode |
-| `upopencode-ru --alias show` | список лаунчеров (`opencode`, `opencode2`, твои алиасы) |
-| `upopencode-ru --alias remove ИМЯ` | удалить свой алиас |
-| `upopencode-ru --self-update` | обновить **сам upopencode** с GitHub |
-| `upopencode-ru --uninstall` | удалить сам upopencode, OpenCode останется |
-| `upopencode-ru --uninstall-opencode` | удалить OpenCode v2 и лаунчер, upopencode останется |
-| `upopencode-ru --no-color` | без цветов (для логов) |
+| `upoc` | интерактивное меню: поставить / обновить / переехать |
+| `upoc --check`, `-c` | сравнить установленную и последнюю версию, ничего не менять |
+| `upoc --dry-run`, `-n` | показать план и место, ничего не качать |
+| `upoc --yes`, `-y` | без вопросов (бэкап не создаётся) |
+| `upoc --force`, `-f` | переустановить, даже если версия та же |
+| `upoc --restart`, `-r` | перезапустить фоновый сервис после обновления |
+| `upoc --backup` | всегда оставлять бэкап старого бинаря |
+| `upoc --no-backup` | никогда не оставлять бэкап |
+| `upoc --clean` | удалить старые бэкапы и брошенные временные папки |
+| `upoc --alias set ИМЯ` | короткая команда для запуска OpenCode |
+| `upoc --alias show` | список лаунчеров (`opencode`, `opencode2`, твои алиасы) |
+| `upoc --alias remove ИМЯ` | удалить свой алиас |
+| `upoc --self-update` | обновить **сам upopencode** с GitHub |
+| `upoc --uninstall` | удалить сам upopencode, OpenCode останется |
+| `upoc --uninstall-opencode` | удалить OpenCode v2 и лаунчер, upopencode останется |
+| `upoc --no-color` | без цветов (для логов) |
 
 ### Короткие команды
 
 ```sh
-upopencode-ru --alias set code     # теперь "code" запускает OpenCode
-upopencode-ru --alias show
+upoc --alias set code              # теперь "code" запускает OpenCode
+upoc --alias show
 #   ✔ oc        → v2.2.5
 #   ✔ code      → v2.2.5
 #   ✔ opencode  (служебное)
 ```
 
-Установщик уже создаёт `upoc` (английская сборка) и `upoc-ru` (русская).
+Установщик уже создаёт `upoc` — выбранную сборку. Если поставил обе, есть ещё `upoc-en` для английской.
 
 ### Обновлять сам апдейтер
 
 ```sh
-upopencode-ru --self-update
+upoc --self-update
 ```
 
-Скачивает свежий `upopencode-ru` из этого репозитория, правит shebang под
-платформу и атомарно заменяет себя. Английская сборка обновляется из
-`upopencode`.
+Скачивает свежую сборку на установленном языке, правит shebang под платформу
+и атомарно заменяет себя.
 
 ## Как это работает
 
@@ -144,13 +152,13 @@ upopencode-ru --self-update
 Удалить **только upopencode** — OpenCode продолжит работать:
 
 ```sh
-upopencode-ru --uninstall
+upoc --uninstall
 ```
 
 Удалить **OpenCode v2** — upopencode останется, чтобы можно было поставить обратно:
 
 ```sh
-upopencode-ru --uninstall-opencode
+upoc --uninstall-opencode
 ```
 
 Обе команды сначала спрашивают подтверждение; для скриптов добавь `--yes`.
@@ -182,7 +190,7 @@ curl -I https://github.com/anomalyco/opencode/releases.atom
 старый бинарь + распаковка). Освободи место или запусти:
 
 ```sh
-upopencode-ru --clean
+upoc --clean
 ```
 </details>
 
@@ -192,7 +200,7 @@ upopencode-ru --clean
 ```sh
 opencode2 service restart
 ```
-или в следующий раз используй `upopencode-ru --restart`.
+или в следующий раз используй `upoc --restart`.
 </details>
 
 ## Участие

@@ -8,12 +8,8 @@
 #
 set -uo pipefail
 
-# запуск под upopencode-ru переключает на русскую сборку (тот же код)
-case "$(basename "$0")" in
-  upopencode-ru) PROG="upopencode-ru" ;;
-  *)             PROG="upopencode" ;;
-esac
-SELF_VERSION="1.5.0"
+LANG_CODE="ru"          # сгенерированная русская сборка несёт здесь "ru"
+SELF_VERSION="1.5.1"
 REPO="anomalyco/opencode"
 NPM_URL="https://registry.npmjs.org/@opencode%2Fcli/latest"
 NPM_DIST_TAGS="https://registry.npmjs.org/-/package/@opencode%2Fcli/dist-tags"
@@ -22,6 +18,12 @@ GH_API="https://api.github.com/repos/${REPO}"
 GH_SLUG="oyenter37-sudo/upopencode"
 GH_BRANCH="main"
 RAW_BASE="https://raw.githubusercontent.com/${GH_SLUG}/${GH_BRANCH}"
+
+case "$LANG_CODE" in
+  ru) SELF_ASSET="upopencode-ru" ;;
+  *)  SELF_ASSET="upopencode" ;;
+esac
+PROG="$SELF_ASSET"     # заменяется на установленное имя, когда известен SELF_BIN
 
 PREFIX="${PREFIX:-/data/data/com.termux/files/usr}"
 XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
@@ -47,8 +49,18 @@ esac
 
 if [ "$TERMUX" = 1 ]; then BIN_DIR="$PREFIX/bin"; else BIN_DIR="$HOME/.local/bin"; fi
 
-# куда установлен сам скрипт — на него указывает служебное имя upoc
-SELF_BIN="$BIN_DIR/$PROG"
+# где лежит этот файл — на него указывает короткое имя upoc
+SELF_BIN="$0"
+case "$SELF_BIN" in
+  */*) ;;
+  *) SELF_BIN="$(command -v -- "$SELF_BIN" 2>/dev/null || printf '%s' "$SELF_BIN")" ;;
+esac
+SELF_BIN="$(readlink -f "$SELF_BIN" 2>/dev/null || printf '%s' "$SELF_BIN")"
+case "$SELF_BIN" in
+  "$BIN_DIR"/*) ;;
+  *) SELF_BIN="$BIN_DIR/$SELF_ASSET" ;;  # запуск из репозитория: ставим в BIN_DIR
+esac
+PROG="$(basename "$SELF_BIN")"
 ALIAS_DEFAULT="oc"
 ALIAS_NAME=""
 ALIAS_ACTION=""
@@ -781,7 +793,7 @@ alias_set() {
     -*|.*)             die "Имя не может начинаться с '-' или '.'." ;;
   esac
   case "$name" in
-    opencode|opencode2|opencode-v1|upopencode|upoc|opencode-browser)
+    opencode|opencode2|opencode-v1|upopencode|upopencode-en|upopencode-ru|upoc|upoc-en|upoc-ru|opencode-browser)
       die "Имя $name служебное — выбери другое." "Например: $PROG --alias set oc" ;;
   esac
   [ -x "$LAUNCHER" ] || die "OpenCode не установлен." "Сначала запусти: $PROG"
@@ -845,7 +857,7 @@ EOF
 
 # ---------- самообновление апдейтера ----------
 self_update() {
-  local url="$RAW_BASE/$PROG" tmp ver
+  local url="$RAW_BASE/$SELF_ASSET" tmp ver
   printf '\n  %s⬢%s  %supopencode%s · self-update\n\n' "$MG" "$RST" "$BOLD" "$RST"
   STEP=0; STEPS=2
 
@@ -876,10 +888,10 @@ self_update() {
   [ -d "$BIN_DIR" ] || mkdir -p "$BIN_DIR" 2>/dev/null
   install -m 755 "$tmp" "$SELF_BIN" || { rm -f "$tmp"; die "Не удалось записать $SELF_BIN (нет прав?)"; }
   rm -f "$tmp"
-  case "$PROG" in
-    upopencode-ru) ln -sfn "$SELF_BIN" "$BIN_DIR/upoc-ru" 2>/dev/null || true ;;
-    *)             ln -sfn "$SELF_BIN" "$BIN_DIR/upoc" 2>/dev/null || true ;;
-  esac
+  ln -sfn "$BIN_DIR/upopencode" "$BIN_DIR/upoc" 2>/dev/null || true
+  if [ -e "$BIN_DIR/upopencode-en" ]; then
+    ln -sfn "$BIN_DIR/upopencode-en" "$BIN_DIR/upoc-en" 2>/dev/null || true
+  fi
   step_ok "v$ver"
 
   printf '\n'
@@ -928,7 +940,7 @@ uninstall_updater() { # удалить только upopencode, OpenCode не т
   # алиасы — это ярлыки на OpenCode, они принадлежат апдейтеру
   remove_aliases keep-service
   # короткие служебные имена и обе сборки
-  for n in upoc upoc-ru upopencode upopencode-ru; do
+  for n in upoc upoc-en upoc-ru upopencode upopencode-en upopencode-ru; do
     p="$BIN_DIR/$n"
     if [ -e "$p" ] || [ -L "$p" ]; then
       rm -f "$p" && printf '  %s✔%s удалено: %s\n' "$GR" "$RST" "$n"

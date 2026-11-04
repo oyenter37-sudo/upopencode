@@ -38,14 +38,15 @@ a broken `LD_PRELOAD`, and no way to update it later.
 curl -fsSL https://raw.githubusercontent.com/oyenter37-sudo/upopencode/main/install.sh | bash
 ```
 
-That installs **both** builds:
+The installer asks which language you want — arrow keys, `1`/`2`/`3`, or a tap:
 
-| Command | Language |
+| Choice | Installed commands |
 |---|---|
-| `upopencode` | English |
-| `upopencode-ru` | Русский |
+| **Both** | `upopencode` / `upoc` — Русский · `upopencode-en` / `upoc-en` — English |
+| **English only** | `upopencode` / `upoc` — English |
+| **Русский only** | `upopencode` / `upoc` — Русский |
 
-Want only one?
+Skip the menu with a flag:
 
 ```sh
 # English only
@@ -53,14 +54,20 @@ curl -fsSL https://raw.githubusercontent.com/oyenter37-sudo/upopencode/main/inst
 
 # Russian only
 curl -fsSL https://raw.githubusercontent.com/oyenter37-sudo/upopencode/main/install.sh | bash -s -- --ru
+
+# both (no menu)
+curl -fsSL https://raw.githubusercontent.com/oyenter37-sudo/upopencode/main/install.sh | bash -s -- --both
 ```
 
 Then just run it:
 
 ```sh
-upopencode          # menu: install / update / migrate
-upopencode --check  # is there a newer version?
+upoc                # menu: install / update / migrate
+upoc --check        # is there a newer version?
 ```
+
+`upoc` always launches the build you picked. If you installed **both**, `upoc`
+is the Russian one and `upoc-en` is the English one.
 
 > **No Node.js, no Python, no npm.** Pure Bash + `curl`, `tar`, `sha256sum`, `df`
 > and, on Termux, `patchelf` + `glibc` (the script offers to install them).
@@ -74,46 +81,47 @@ upopencode --check  # is there a newer version?
 
 ## Usage
 
+> `upoc` runs in the language you chose. Installed both? `upoc-en` opens the English one.
+
 | Command | What it does |
 |---|---|
-| `upopencode` | interactive menu: install / update / migrate |
-| `upopencode --check`, `-c` | check installed vs latest version, change nothing |
-| `upopencode --dry-run`, `-n` | show the plan and disk space, download nothing |
-| `upopencode --yes`, `-y` | no prompts (no backup) |
-| `upopencode --force`, `-f` | reinstall even if the version matches |
-| `upopencode --restart`, `-r` | restart the background service after updating |
-| `upopencode --backup` | always keep a backup of the previous binary |
-| `upopencode --no-backup` | never keep a backup |
-| `upopencode --clean` | delete old backups and abandoned temp dirs |
-| `upopencode --alias set NAME` | add a short command that launches OpenCode |
-| `upopencode --alias show` | list launchers (`opencode`, `opencode2`, your aliases) |
-| `upopencode --alias remove NAME` | remove one of your aliases |
-| `upopencode --self-update` | update **upopencode itself** from GitHub |
-| `upopencode --uninstall` | remove upopencode itself, keep OpenCode |
-| `upopencode --uninstall-opencode` | remove OpenCode v2 and its launcher, keep upopencode |
-| `upopencode --no-color` | plain output for logs |
+| `upoc` | interactive menu: install / update / migrate |
+| `upoc --check`, `-c` | check installed vs latest version, change nothing |
+| `upoc --dry-run`, `-n` | show the plan and disk space, download nothing |
+| `upoc --yes`, `-y` | no prompts (no backup) |
+| `upoc --force`, `-f` | reinstall even if the version matches |
+| `upoc --restart`, `-r` | restart the background service after updating |
+| `upoc --backup` | always keep a backup of the previous binary |
+| `upoc --no-backup` | never keep a backup |
+| `upoc --clean` | delete old backups and abandoned temp dirs |
+| `upoc --alias set NAME` | add a short command that launches OpenCode |
+| `upoc --alias show` | list launchers (`opencode`, `opencode2`, your aliases) |
+| `upoc --alias remove NAME` | remove one of your aliases |
+| `upoc --self-update` | update **upopencode itself** from GitHub |
+| `upoc --uninstall` | remove upopencode itself, keep OpenCode |
+| `upoc --uninstall-opencode` | remove OpenCode v2 and its launcher, keep upopencode |
+| `upoc --no-color` | plain output for logs |
 
 ### Short commands
 
 ```sh
-upopencode --alias set code     # now "code" launches OpenCode
-upopencode --alias show
+upoc --alias set code           # now "code" launches OpenCode
+upoc --alias show
 #   ✔ oc        → v2.2.5
 #   ✔ code      → v2.2.5
 #   ✔ opencode  (built-in)
 ```
 
-The installer already creates `upoc` (English build) and `upoc-ru` (Russian).
+The installer already creates `upoc` — the build you picked. With both installed you also get `upoc-en` for English.
 
 ### Keep it fresh
 
 ```sh
-upopencode --self-update
+upoc --self-update
 ```
 
-It downloads the latest `upopencode` from this repository, rewrites the shebang
-for your platform and replaces itself atomically. `upopencode-ru` updates from
-`upopencode-ru`.
+It downloads the latest build for the language you have installed, rewrites the
+shebang for your platform and replaces itself atomically.
 
 ## How it works
 
@@ -145,13 +153,13 @@ Two separate commands, so you never delete more than you meant to.
 Remove **upopencode only** — OpenCode keeps working:
 
 ```sh
-upopencode --uninstall
+upoc --uninstall
 ```
 
 Remove **OpenCode v2** — upopencode stays installed, so you can bring it back:
 
 ```sh
-upopencode --uninstall-opencode
+upoc --uninstall-opencode
 ```
 
 Both ask for confirmation first; add `--yes` for scripts. Neither touches your
@@ -183,7 +191,7 @@ An update peaks at roughly **4.5 × 112 MiB + 30 MiB ≈ 536 MiB** (new binary +
 old binary + extraction). Free some space or run:
 
 ```sh
-upopencode --clean
+upoc --clean
 ```
 </details>
 
@@ -193,7 +201,7 @@ upopencode --clean
 ```sh
 opencode2 service restart
 ```
-or use `upopencode --restart` next time.
+or use `upoc --restart` next time.
 </details>
 
 ## Contributing
