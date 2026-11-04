@@ -1,0 +1,7 @@
+*.log
+*.tmp
+.DS_Store
+__pycache__/
+tools/__pycache__/
+tests/tmp/
+MENU_ROW

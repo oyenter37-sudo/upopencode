@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: lint, sync, smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Bash syntax (both builds)
+        run: |
+          bash -n upopencode
+          bash -n upopencode-ru
+          bash -n install.sh
+
+      - name: ShellCheck (errors only)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq shellcheck
+          shellcheck -S error upopencode install.sh
+
+      - name: Russian build is generated and in sync
+        run: |
+          python3 tools/translate.py to-ru
+          git diff --exit-code -- upopencode-ru
+
+      - name: English build has no untranslated strings
+        run: |
+          if grep -n '[А-Яа-яЁё]' upopencode; then
+            echo "::error::Cyrillic text found in the English build"
+            exit 1
+          fi
+
+      - name: Python tools compile
+        run: |
+          python3 -m py_compile tools/i18n_table.py tools/translate.py docs/make_shots.py
+
+      - name: Installer + runtime smoke test
+        run: bash tests/smoke.sh
+
+  release:
+    name: release assets
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build SHA256SUMS
+        run: |
+          sha256sum upopencode upopencode-ru install.sh > SHA256SUMS
+          cat SHA256SUMS
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            upopencode
+            upopencode-ru
+            install.sh
+            SHA256SUMS
+          generate_release_notes: true
