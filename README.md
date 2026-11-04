@@ -9,6 +9,9 @@ Fresh install · v1 → v2 migration · atomic updates · one-line progress.
 [![Release](https://img.shields.io/github/v/release/oyenter37-sudo/upopencode?color=46c018)](https://github.com/oyenter37-sudo/upopencode/releases)
 [![License: MIT](https://img.shields.io/github/license/oyenter37-sudo/upopencode?color=blue)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Termux%20%7C%20Linux-8957e5)](#requirements)
+[![OpenCode 2.2.5 tested](https://img.shields.io/badge/OpenCode-2.2.5%20tested-46c018)](https://github.com/anomalyco/opencode/releases/tag/v2.2.5)
+
+<sub>Last verified with <b>OpenCode 2.2.5</b> · November 2026</sub>
 
 <img src="docs/screenshot-check.svg" alt="upopencode --check" width="760">
 
@@ -31,6 +34,24 @@ a broken `LD_PRELOAD`, and no way to update it later.
 - swaps the binary **atomically** and **rolls back** if it does not start;
 - keeps your v1 around as `opencode-v1`;
 - shows a pretty menu you can drive with keys **or a finger tap**.
+
+## How it differs
+
+Some Termux installers build OpenCode locally, compile `statx` shims and package a
+`.deb` with `git`, `make` and `binutils`. This one takes the short safe path:
+**no local build, no `.deb`, no toolchain.**
+
+|  | upopencode | local-build installers |
+|---|---|---|
+| Toolchain | none — Bash + `curl` | `git`, `make`, `binutils`, `jq` |
+| Source | official release tarball | cloned sources + local patches |
+| Integrity | SHA-256 from `SHA256SUMS` | depends on the build |
+| Update | atomic replace + automatic rollback | rebuild + `apt` |
+| Disk | ≈112 MiB, archive deleted right after unpack | hundreds of MiB of build files |
+| Languages | English + Русский | usually one |
+
+Local builds are a valid fallback when the official binary refuses to start on a
+particular device. `upopencode` targets the common case and keeps it small.
 
 ## Install
 

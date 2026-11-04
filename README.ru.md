@@ -9,6 +9,9 @@
 [![Release](https://img.shields.io/github/v/release/oyenter37-sudo/upopencode?color=46c018)](https://github.com/oyenter37-sudo/upopencode/releases)
 [![License: MIT](https://img.shields.io/github/license/oyenter37-sudo/upopencode?color=blue)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Termux%20%7C%20Linux-8957e5)](#требования)
+[![OpenCode 2.2.5 tested](https://img.shields.io/badge/OpenCode-2.2.5%20tested-46c018)](https://github.com/anomalyco/opencode/releases/tag/v2.2.5)
+
+<sub>Последняя проверка: <b>OpenCode 2.2.5</b> · ноябрь 2026</sub>
 
 <img src="docs/screenshot-check-ru.svg" alt="upopencode --check" width="760">
 
@@ -31,6 +34,25 @@
 - меняет бинарь **атомарно** и **откатывается**, если новый не запустился;
 - сохраняет v1 как `opencode-v1`;
 - показывает красивое меню: стрелки, цифры, Enter и **тап пальцем**.
+
+## Чем отличается
+
+Некоторые установщики для Termux собирают OpenCode локально, компилируют
+`statx`-shim и пакуют `.deb` через `git`, `make` и `binutils`. Здесь короткий
+безопасный путь: **без локальной сборки, без `.deb`, без toolchain.**
+
+|  | upopencode | установщики с локальной сборкой |
+|---|---|---|
+| Toolchain | не нужен — Bash + `curl` | `git`, `make`, `binutils`, `jq` |
+| Источник | официальный release-tarball | клонированные исходники + патчи |
+| Проверка | SHA-256 из `SHA256SUMS` | зависит от сборки |
+| Обновление | атомарная замена + автооткат | пересборка + `apt` |
+| Место | ≈112 МиБ, архив удаляется сразу после распаковки | сотни МиБ файлов сборки |
+| Языки | English + Русский | обычно один |
+
+Локальная сборка — разумный запасной вариант, если официальный бинарь не
+запускается на конкретном устройстве. `upopencode` закрывает частый случай и
+остаётся лёгким.
 
 ## Установка
 
