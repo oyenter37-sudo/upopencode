@@ -13,7 +13,7 @@
 [![latest OpenCode](https://img.shields.io/github/v/release/anomalyco/opencode?label=opencode&color=46c018&sort=semver)](https://github.com/anomalyco/opencode/releases)
 
 <!-- upstream:start -->
-**Последний OpenCode: v2.2.5** · проверяется каждый день · [поставить или обновить одной командой →](#быстрый-старт)
+**Последний OpenCode: v2.2.6** · проверяется каждый день · [поставить или обновить одной командой →](#быстрый-старт)
 <!-- upstream:end -->
 
 </div>

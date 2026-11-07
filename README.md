@@ -13,7 +13,7 @@ Fresh install · v1 → v2 migration · atomic updates · one-line progress.
 [![latest OpenCode](https://img.shields.io/github/v/release/anomalyco/opencode?label=opencode&color=46c018&sort=semver)](https://github.com/anomalyco/opencode/releases)
 
 <!-- upstream:start -->
-**Latest OpenCode: v2.2.5** · checked daily · [install or update with one command →](#quick-start)
+**Latest OpenCode: v2.2.6** · checked daily · [install or update with one command →](#quick-start)
 <!-- upstream:end -->
 
 </div>
